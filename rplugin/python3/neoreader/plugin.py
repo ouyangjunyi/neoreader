@@ -322,26 +322,26 @@ class Main(object):
             speed=200
         )
 
-    @neovim.autocmd('CursorMoved')
-    @requires_option(Options.AUTO_SPEAK_LINE)
-    def handle_cursor_moved(self):
-        current = self.vim.current.line
-        if current == self.last_spoken:
-            # FIXME: Dirty hack. Should rather figure out whether changing lines
-            pass
-        else:
-            self.last_spoken = current
-            self.speak(current, newline=True)
+   # @neovim.autocmd('CursorMoved')
+   # @requires_option(Options.AUTO_SPEAK_LINE)
+   # def handle_cursor_moved(self):
+   #     current = self.vim.current.line
+   #     if current == self.last_spoken:
+   #         # FIXME: Dirty hack. Should rather figure out whether changing lines
+   #         pass
+   #     else:
+   #         self.last_spoken = current
+   #         self.speak(current, newline=True)
 
-    @neovim.autocmd('InsertEnter')
-    @requires_option(Options.SPEAK_MODE_TRANSITIONS)
-    def handle_insert_enter(self):
-        self.speak("INSERT ON", stop=True)
+   # @neovim.autocmd('InsertEnter')
+   # @requires_option(Options.SPEAK_MODE_TRANSITIONS)
+   # def handle_insert_enter(self):
+   #     self.speak("INSERT ON", stop=True)
 
-    @neovim.autocmd('InsertLeave')
-    @requires_option(Options.SPEAK_MODE_TRANSITIONS)
-    def handle_insert_leave(self): 
-        self.speak("INSERT OFF", stop=True)
+   # @neovim.autocmd('InsertLeave')
+   # @requires_option(Options.SPEAK_MODE_TRANSITIONS)
+   # def handle_insert_leave(self): 
+   #     self.speak("INSERT OFF", stop=True)
 
     def flush_stack(self):
         word = "".join(self.literal_stack)
@@ -350,35 +350,35 @@ class Main(object):
             self.speak(word, literal=True, speed=700)
 
 
-    @neovim.autocmd('InsertCharPre', eval='[v:char, getpos(".")]')
-    def handle_insert_char(self, data):
-        inserted, pos = data
-        _, row, col, _ = pos
-        #row, col = self.vim.api.win_get_cursor(self.vim.current.window)
-        line = self.vim.current.line
+   # @neovim.autocmd('InsertCharPre', eval='[v:char, getpos(".")]')
+   # def handle_insert_char(self, data):
+   #     inserted, pos = data
+   #     _, row, col, _ = pos
+   #     #row, col = self.vim.api.win_get_cursor(self.vim.current.window)
+   #     line = self.vim.current.line
 
-        self.literal_stack.append(inserted)
+   #     self.literal_stack.append(inserted)
 
-        speak_words = self.get_option(self.Options.SPEAK_WORDS)
+   #     speak_words = self.get_option(self.Options.SPEAK_WORDS)
 
-        if inserted == ' ':
-            self.flush_stack()
+   #     if inserted == ' ':
+   #         self.flush_stack()
 
-            if speak_words: 
-                # Inserted a space, say the last inserted word
-                start_of_word = line.rfind(' ', 0, len(line) - 1)
-                word = line[start_of_word + 1:col]
-                self.speak(word, brackets=True, generic=False, haskell=False, stop=False)
-        elif len(self.literal_stack) > 3:
-            self.flush_stack()
+   #         if speak_words: 
+   #             # Inserted a space, say the last inserted word
+   #             start_of_word = line.rfind(' ', 0, len(line) - 1)
+   #             word = line[start_of_word + 1:col]
+   #             self.speak(word, brackets=True, generic=False, haskell=False, stop=False)
+   #     elif len(self.literal_stack) > 3:
+   #         self.flush_stack()
 
-    @neovim.autocmd('CompleteDone', eval='v:completed_item')
-    @requires_option(Options.SPEAK_COMPLETIONS)
-    def handle_complete_done(self, item):
-        if not item:
-            return
+   # @neovim.autocmd('CompleteDone', eval='v:completed_item')
+   # @requires_option(Options.SPEAK_COMPLETIONS)
+   # def handle_complete_done(self, item):
+   #     if not item:
+   #         return
 
-        if isinstance(item, dict):
-            item = item['word']
+   #     if isinstance(item, dict):
+   #         item = item['word']
 
-        self.speak(item)
+   #     self.speak(item)
