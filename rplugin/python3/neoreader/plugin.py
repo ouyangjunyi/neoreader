@@ -18,20 +18,20 @@ logger.setLevel(logging.DEBUG)
 
 
 COMPARISONS =\
-    { " < "  : "less than"
-    , " > "  : "greater than"
-    , " >= " : "greater than or equal to"
-    , " <= " : "less than or equal to"
-    , " == " : "is equal to"
-    , " && " : "and"
-    , " || " : "or"
+    { " < "  : "小于"
+    , " > "  : "大于"
+    , " >= " : "大于等于"
+    , " <= " : "小于等于"
+    , " == " : "等于"
+    , " && " : "与"
+    , " || " : "或"
     }
 
 STANDARD =\
-    { ",": ", comma, "
-    , ".": ", dot, "
-    , ":": ", colon, "
-    , "\n": ", newline, "
+    { ",": ""
+    , ".": ""
+    , ":": ""
+    , "\n": ""
     }
 
 BRACKET_PAIRINGS =\
@@ -107,7 +107,7 @@ class Main(object):
         AUTO_SPEAK_LINE = ('auto_speak_line', True)
         INDENT_STATUS = ('speak_indent', False)
         PITCH_MULTIPLIER = ('pitch_multiplier', 1)
-        SPEED = ('speak_speed', 350)
+        SPEED = ('speak_speed', 200)
         USE_ESPEAK = ('use_espeak', False)
         SPEAK_VOICE = ('speak_voice', '')
 
@@ -279,7 +279,7 @@ class Main(object):
      
         self.speak(
             explained,
-            stop=True,
+            stop=False,
             standard=False,
             brackets=False,
             haskell=False,
@@ -314,7 +314,7 @@ class Main(object):
 
         self.speak(
             explained,
-            stop=True,
+            stop=False,
             standard=False,
             brackets=False,
             haskell=False,
@@ -336,18 +336,18 @@ class Main(object):
    # @neovim.autocmd('InsertEnter')
    # @requires_option(Options.SPEAK_MODE_TRANSITIONS)
    # def handle_insert_enter(self):
-   #     self.speak("INSERT ON", stop=True)
+   #     self.speak("INSERT ON", stop=False)
 
    # @neovim.autocmd('InsertLeave')
    # @requires_option(Options.SPEAK_MODE_TRANSITIONS)
    # def handle_insert_leave(self): 
-   #     self.speak("INSERT OFF", stop=True)
+   #     self.speak("INSERT OFF", stop=False)
 
     def flush_stack(self):
         word = "".join(self.literal_stack)
         self.literal_stack = []
         if self.get_option(self.Options.SPEAK_KEYPRESSES):
-            self.speak(word, literal=True, speed=700)
+            self.speak(word, literal=True, speed=200)
 
 
    # @neovim.autocmd('InsertCharPre', eval='[v:char, getpos(".")]')
