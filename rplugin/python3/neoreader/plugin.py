@@ -194,7 +194,7 @@ class Main(object):
         indent_status=None,
         newline=False,
         literal=False,
-        stop=True
+        stop=False
         ):
 
         if brackets is None:
@@ -264,7 +264,7 @@ class Main(object):
     @neovim.command('SpeakLine')
     def cmd_speak_line(self):
         current = self.vim.current.line
-        self.speak(current, newline=True)
+        self.speak(current, newline=False)
 
     @neovim.command('SpeakLineDetail')
     def cmd_speak_line_detail(self):
